@@ -1,0 +1,123 @@
+body, html{
+    height:100%;
+    margin:0;
+    font-size:16px;
+    font-family:"Lato", sans-serif;
+    font-weight:400;
+    line-height:1.8em;
+    color: rgb(244, 120, 47);
+}
+
+.pimg1, .pimg2, .pimg3{
+    position:relative;
+    opacity:0.95;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+.pimg1{
+    background-image:url('../images/kumquat1.jpg');
+    min-height:100%;
+    min-width:100%;
+}
+
+.pimg2{
+    background-image:url('../images/kumquat2.jpg');
+    min-height:400px;
+    min-width:100%;
+}
+
+.pimg3{
+    background-image:url('../images/kumquat3.jpg');
+    min-height:400px;
+    min-width:100%;
+}
+
+.section{
+    text-align:center;
+    padding:50px 80px;
+}
+
+.section-light{
+    background-color: rgb(244, 120, 47);
+    color:white;
+}
+
+.section-dark{
+    background-color: rgb(244, 120, 47);
+    color:#ddd;
+}
+
+.ptext{
+    position:absolute;
+    top:50%;
+    width:100%;
+    text-align:center;
+    color:#000;
+    font-size:29px;
+    letter-spacing:8px;
+    text-transform:uppercase;
+}
+
+.ptext .border{
+    background-color: rgb(244, 126, 32);
+    color:#fff;
+    padding:20px;
+}
+
+
+input[type=text], input[type=password], input[type=email] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    background-color: #f48e3e;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+.imgnav {
+    text-align: center;
+    margin: 7px 0 5px 0;
+}
+
+img.avatar {
+    width: 35%;
+    border-radius: 50%;
+}
+
+.navbar-custom {
+    background-color: #f38d3e;
+}/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: rgba(255,255,255,75);
+}/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: rgba(255,255,255,75);
+}/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #ffffff;
+}
+
+@media screen and(min-width: 992px) {
+    body {
+        padding-top: 56px;
+    }
+}
