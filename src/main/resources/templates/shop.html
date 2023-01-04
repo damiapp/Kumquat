@@ -19,39 +19,9 @@
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
 
 <div th:replace="fragments/general.html :: navigation"></div>
-
-</br>
-<a th:href="@{/items}">
-<button sec:authorize="hasRole('ROLE_ADMIN')"  class="btn btn-primary">
-    New Item
-</button>
-</a>
-
-</br>
-<div class="container">
-    <th:block th:each="item : ${items}">
-    <div class="row">
-        <div class="col-md-offset-2 col-md-8">
-        </div>
-        <div class="row">
-            <div class="col-sm-4 col-lg-4 col-md-4">
-                <div class="thumbnail">
-                    <img class="simg" src="../static/images/kumquat1.jpg" alt="Picture of the item">
-                    <div class="caption">
-                        <h4 class="pull-right">RSD ${item.price}</h4>
-                        <h4>${item.itemName}</h4>
-                        <p>${item.desctiption}
-                            <br>
-                            Item in stock: ${item.stock}
-                        </p>
-                        <button sec:authorize="isAuthenticated()" style="margin:auto;" class="btn btn-primary">Buy</button>
-                        <button sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-secondary" > Edit </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </th:block>
+<br/>
+<div id="products" class="mb-3">
+    <div th:replace="fragments/products.html :: list"></div>
 </div>
 
 </body>

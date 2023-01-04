@@ -45,12 +45,19 @@
                 Shop
               </a>
             </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+              <a class="nav-link active" th:href="@{/items}">
+                <i class="bi bi-plus-square"></i>
+                Add/Edit Product
+              </a>
+            </li>
             <li sec:authorize="isAuthenticated()" class="nav-item">
               <a class="nav-link active" th:href="@{/logout}">
                 <i class="bi bi-box-arrow-in-left"></i>
                 Logout
               </a>
             </li>
+            </br>
           </ul>
         </div>
       </div>

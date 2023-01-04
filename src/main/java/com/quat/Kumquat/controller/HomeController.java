@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -79,17 +80,23 @@ public class HomeController {
 
     @GetMapping("/shop")
     public String shop(Model model){
-        Set<ProductDto> items = productService.getAllProducts();
-        model.addAttribute("items", items);
+        List<ProductDto> products = productService.getAllProducts();
+        model.addAttribute("products", products);
         return "shop";
     }
 
     @GetMapping("/items")
-    public String items(Model model){
-        ProductDto product = new ProductDto();
+    public String items(
+            @RequestParam(value = "prodName", required = false) String prodName,
+            Model model){
+        ProductDto product;
+        if(prodName!=null) {
+            product = productService.getProduct(Integer.parseInt(prodName));
+        }
+        else{
+            product = new ProductDto();
+        }
         model.addAttribute("product", product);
-        Set<ProductDto> items = productService.getAllProducts();
-        model.addAttribute("items", items);
         return "items";
     }
 
@@ -108,14 +115,14 @@ public class HomeController {
     
     @PostMapping(value="/items/save", params="edit")
     public String itemChange(@Valid @ModelAttribute("item") ProductDto productDto,
+                           @RequestParam(value = "prodName", required = true) String prodName,
                            BindingResult result,
                            Model model) {
         if (result.hasErrors()) {
             model.addAttribute("item", productDto);
             return "items";
         }
-
-        productService.changeProduct(productDto);
+        productService.changeProduct(Integer.parseInt(prodName),productDto);
         return "redirect:/items?success";
     }
 }

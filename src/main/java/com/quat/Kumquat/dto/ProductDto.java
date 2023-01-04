@@ -5,6 +5,7 @@ import lombok.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Base64;
 
 @Getter
 @Setter
@@ -22,4 +23,10 @@ public class ProductDto {
     private int stock;
     private String description;
     private byte[] image;
+
+    public String convertByteToString(byte[] img){
+        if(img==null)
+            return "";
+        return new String(img);
+    }
 }

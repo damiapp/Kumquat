@@ -5,12 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -22,17 +20,16 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String itemName;
-    @Column(nullable = false)
+    @Column
     private double price;
-    @Column(nullable = false)
+    @Column
     private int stock;
     @Column
     private String description;
-    @Lob
-    @Column(columnDefinition="bytea")
+    @Type(type="org.hibernate.type.BinaryType")
+    @Column(name = "image")
     private byte[] image;
-    @ManyToMany(mappedBy = "products")
-    private Set<User> users = Collections.emptySet();
+
 }

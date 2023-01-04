@@ -32,15 +32,12 @@ public class User {
             inverseJoinColumns = { @JoinColumn(name = "role_id", referencedColumnName = "id") }
     )
     private List<Role> roles = new ArrayList<Role>();
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "product_order",
-            joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
-            inverseJoinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id") }
-    )
-    private List<Product> products =  new ArrayList<Product>();
 
-    @OneToMany(mappedBy = "reciver")
+    @ManyToMany
+    @JoinTable(name = "product_order")
+    private List<Product> products;
+
+    @OneToMany(mappedBy = "sender")
     private List<Inbox> inbox;
 
 }

@@ -1,0 +1,15 @@
+<div class="row" th:fragment="list" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <div th:each="item:${products}" class="col-sm-4">
+    <div class="card mb-3 col-sm-6" style="width: 18rem;">
+      <div class="card-body">
+        <img class="card-img-top" th:src="@{'images/'+${item.convertByteToString(item.image)}}" alt="Picture of the item">
+        <h4><p th:text="${item.itemName}"> </p> </h4>
+        <p>Description: <span th:text="${item.description}" ></span> </p>
+        <p>Item in stock: <span th:text="${item.stock}" ></span> </p>
+        <h4 class="pull-right">RSD <span th:text="${item.price}"> </span></h4>
+        <a> <button sec:authorize="isAuthenticated()" style="margin:auto;" class="btn btn-primary">Buy</button> </a>
+        <a th:href="@{/items/(prodName=${item.id})}" > <button sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-secondary" > Edit </button> </a>
+      </div>
+    </div>
+  </div>
+</div>

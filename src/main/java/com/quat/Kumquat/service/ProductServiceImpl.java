@@ -2,6 +2,7 @@ package com.quat.Kumquat.service;
 
 import com.quat.Kumquat.dto.ProductDto;
 import com.quat.Kumquat.model.Product;
+import com.quat.Kumquat.model.User;
 import com.quat.Kumquat.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,62 +19,66 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Set<ProductDto> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         List<Product> products = productRepository.findAll();
-        if(products!=null)
-            return products.stream()
+        return products.stream()
                 .map((product) -> mapToProductDto(product))
-                .collect(Collectors.toSet());
-        else
-            return Collections.emptySet();
+                .collect(Collectors.toList());
     }
 
     private ProductDto mapToProductDto(Product product){
         ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
         productDto.setItemName(product.getItemName());
         productDto.setPrice(product.getPrice());
+        productDto.setDescription(product.getDescription());
+        productDto.setStock(product.getStock());
+        productDto.setImage(product.getImage());
         return productDto;
     }
 
+    public ProductDto findProductByName(String prodName){ return mapToProductDto(productRepository.findByItemName(prodName));}
+
     @Override
-    public Product getProduct(long id) {
-        return productRepository.findById(id);
+    public ProductDto getProduct(long id) {
+        return mapToProductDto(productRepository.findById(id));
     }
 
     @Override
     public void saveProduct(ProductDto prod) {
-        if(productRepository.findById(prod.getId())!=null){
-
+        if(productRepository.findByItemName(prod.getItemName())==null){
+            Product product = new Product();
+            product.setItemName(prod.getItemName());
+            product.setPrice(prod.getPrice());
+            product.setStock(prod.getStock());
+            product.setImage(prod.getImage());
+            String des = prod.getDescription();
+            if(des!=null)
+                product.setDescription(des);
+            else
+                product.setDescription("");
+            productRepository.save(product);
         }
-        Product product = new Product();
-        product.setPrice(prod.getPrice());
-        product.setStock(prod.getStock());
-        product.setImage(prod.getImage());
-        String des = prod.getDescription();
-        if(des!=null)
-            product.setDescription(des);
-        else
-            product.setDescription("");
-        product.setUsers(Collections.emptySet());
-        productRepository.save(product);
     }
 
     @Override
-    public void changeProduct(ProductDto product){
-       Optional<Product> cp = productRepository.findById(product.getId());
-       cp.ifPresent(product1 -> {
-           product1.setPrice(product.getPrice());
-           product1.setStock(product.getStock());
-           product1.setImage(product.getImage());
-           String des = product.getDescription();
-           if(des!=null)
-               product1.setDescription(des);
-           else
-               product1.setDescription("");
-           productRepository.save(product1);
-       });
+    public void changeProduct(int id, ProductDto product){
+       Product cp = productRepository.findById(id);
+       productRepository.delete(cp);
+        cp.setItemName(product.getItemName());
+        cp.setPrice(product.getPrice());
+        cp.setStock(product.getStock());
+        cp.setImage(product.getImage());
 
+       String des = cp.getDescription();
+       if(des!=null)
+           cp.setDescription(des);
+       else
+           cp.setDescription("");
 
+       if(cp.getImage()!=null)
+           cp.setImage(product.getImage());
+       productRepository.save(cp);
 
     }
 }

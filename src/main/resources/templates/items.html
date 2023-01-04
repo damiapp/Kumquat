@@ -33,10 +33,10 @@
 
 <div class="container">
   <div class="col-lg-6 col-lg-offset-3">
-    <form  th:action="@{items/save}" method="post"  th:object="${product}">
+    <form  th:action="@{/items/save/(prodName=${product.id})}" method="post"  th:object="${product}">
     <div>
       <label>Item Name</label>
-      <input type="text" name="itemName" th:field="*{itemName}" value="">
+      <input type="text" name="itemName" th:field="*{itemName}">
       <p th:errors = "*{itemName}" class="text-danger"
          th:if="${#fields.hasErrors('itemName')}"></p>
     </div>
@@ -57,11 +57,12 @@
       <textarea type="text" name="description" th:field="*{description}" cols='40' rows ='4'></textarea>
     </div>
     <div>
+      <img width="350" height="350" th:src="@{'/images/'+${product.convertByteToString(product.image)}}" alt="Nema slike">
       <label>Item Image
-        <input type="file" name="image" value=""></label>
+        <input type="file" name="image" accept="image/*" th:field="*{image}"></label>
     </div>
     <div>
-      <input type="submit" name="edit" style="background: #556B2F;" value="Edit" >
+      <input type="submit" name="edit" style="background: #556B2F;" value="Edit">
       <input type="submit" name="submit" value="Save">
     </div>
     </form>
