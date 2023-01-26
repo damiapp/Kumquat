@@ -1,22 +1,52 @@
 package com.quat.Kumquat.service;
 
-import com.quat.Kumquat.dto.ProductDto;
 import com.quat.Kumquat.model.Product;
+import com.quat.Kumquat.model.ProductOrder;
+import com.quat.Kumquat.model.User;
 import com.quat.Kumquat.repository.ProductOrderRepository;
-import com.quat.Kumquat.repository.ProductRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ProductOrderServiceImpl implements ProductOrderService{
     private ProductOrderRepository productOrderRepository;
+    private ProductService productService;
+    private UserService userService;
 
-    public ProductOrderServiceImpl(ProductOrderRepository productOrderRepository) {
+    private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    public ProductOrderServiceImpl(ProductOrderRepository productOrderRepository,
+                                   ProductService productService) {
         this.productOrderRepository = productOrderRepository;
+        this.productService = productService;
     }
 
 
+    public void setStatusSent(long id){
+        ProductOrder po = productOrderRepository.findById(id).get();
+        po.setStatus(false);
+        productOrderRepository.save(po);
+    }
+
     @Override
-    public List<Product> getAllProductsForUser(int user_id) {
-        return productOrderRepository.findUserProducts(user_id);
+    public void addProductForUser(User user, Product product) {
+        ProductOrder productOrder = new ProductOrder();
+        productOrder.setProduct(product);
+        productOrder.setUser(user);
+        productOrder.setStatus(true);
+        productOrderRepository.save(productOrder);
+    }
+
+    public List<ProductOrder> findAllProductOrdersForUser(User user){
+        List<ProductOrder> productOrders = productOrderRepository.findAllByUser(user);
+        return productOrders;
+    }
+
+    public List<ProductOrder> findAll(){
+        return productOrderRepository.findAll();
     }
 }

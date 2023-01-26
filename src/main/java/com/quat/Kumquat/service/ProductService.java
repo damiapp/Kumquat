@@ -1,15 +1,14 @@
 package com.quat.Kumquat.service;
 
-import com.quat.Kumquat.dto.ProductDto;
 import com.quat.Kumquat.model.Product;
 
 import java.util.List;
-import java.util.Set;
 
 public interface ProductService {
-    public List<ProductDto> getAllProducts();
-    public ProductDto findProductByName(String prodName);
-    public ProductDto getProduct(long id);
-    public void saveProduct(ProductDto prod);
-    public void changeProduct(int id, ProductDto product);
+    public List<Product> getAllProducts();
+    public Product findProductByName(String prodName);
+    public Product getProduct(long id);
+    public void saveProduct(Product prod);
+    public void changeProduct(int id, Product product);
+    Product findProduct(long id);
 }

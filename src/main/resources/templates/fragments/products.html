@@ -7,8 +7,8 @@
         <p>Description: <span th:text="${item.description}" ></span> </p>
         <p>Item in stock: <span th:text="${item.stock}" ></span> </p>
         <h4 class="pull-right">RSD <span th:text="${item.price}"> </span></h4>
-        <a> <button sec:authorize="isAuthenticated()" style="margin:auto;" class="btn btn-primary">Buy</button> </a>
-        <a th:href="@{/items/(prodName=${item.id})}" > <button sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-secondary" > Edit </button> </a>
+        <a th:href="@{/order/save/(prodId=${item.idProduct})}"> <button sec:authorize="hasRole('ROLE_USER')" style="margin:auto;" class="btn btn-primary">Buy</button> </a>
+        <a th:href="@{/items/(prodName=${item.idProduct})}" > <button sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-secondary" > Edit </button> </a>
       </div>
     </div>
   </div>

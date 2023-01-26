@@ -1,0 +1,22 @@
+<div  th:fragment="orderAdmin" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <div th:each="user:${users}" class="row">
+    <h4 class="pull-right"> <span th:text="${user.name}"> </span></h4>
+    <div th:each="order:${user.orders}" class="col-sm-4">
+    <div class="card mb-3 col-sm-6" style="width: 18rem;">
+      <div class="card-body">
+        <img class="card-img-top" th:src="@{'images/'+${order.product.convertByteToString(order.product.image)}}" alt="Picture of the item">
+        <h4><p th:text="${order.product.itemName}"> </p> </h4>
+        <p>Description: <span th:text="${order.product.description}" ></span> </p>
+        <p>Item in stock: <span th:text="${order.product.stock}" ></span> </p>
+        <h4 class="pull-right">RSD <span th:text="${order.product.price}"> </span></h4>
+        <div th:if="${order.status==true}">
+          <a th:href="@{/ship/(prodOrderId=${order.idProductOrder})}" > <button class="btn btn-warning" > Ship </button> </a>
+        </div>
+        <div th:unless="${order.status==true}">
+          <button class="btn btn-success" disabled> Shiped </button>
+        </div>
+        </div>
+    </div>
+  </div>
+  </div>
+</div>

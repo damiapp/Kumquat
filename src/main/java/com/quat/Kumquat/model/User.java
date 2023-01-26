@@ -18,7 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idUser;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false, unique = true)
@@ -28,16 +28,13 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
-            joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
+            joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "idUser") },
             inverseJoinColumns = { @JoinColumn(name = "role_id", referencedColumnName = "id") }
     )
     private List<Role> roles = new ArrayList<Role>();
 
-    @ManyToMany
-    @JoinTable(name = "product_order")
-    private List<Product> products;
+    @OneToMany(mappedBy = "user")
+    private List<ProductOrder> orders;
 
-    @OneToMany(mappedBy = "sender")
-    private List<Inbox> inbox;
 
 }

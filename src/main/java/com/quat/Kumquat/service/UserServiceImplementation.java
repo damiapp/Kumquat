@@ -1,6 +1,5 @@
 package com.quat.Kumquat.service;
 
-import com.quat.Kumquat.dto.UserDto;
 import com.quat.Kumquat.model.Role;
 import com.quat.Kumquat.model.User;
 import com.quat.Kumquat.repository.RoleRepository;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImplementation implements UserService {
@@ -28,11 +26,8 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public void saveUser(UserDto userDto) {
-        User user = new User();
-        user.setName(userDto.getFirstName() + " " + userDto.getLastName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role role = roleRepository.findByName("ROLE_USER");
         if(role == null){
@@ -48,21 +43,11 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public List<UserDto> findAllUsers() {
+    public List<User> findAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream()
-                .map((user) -> mapToUserDto(user))
-                .collect(Collectors.toList());
+        return users;
     }
 
-    private UserDto mapToUserDto(User user){
-        UserDto userDto = new UserDto();
-        String[] str = user.getName().split(" ");
-        userDto.setFirstName(str[0]);
-        userDto.setLastName(str[1]);
-        userDto.setEmail(user.getEmail());
-        return userDto;
-    }
 
     private Role checkRoleExist(){
         Role role = new Role();

@@ -1,0 +1,19 @@
+<div class="row" th:fragment="orderUser" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <div th:each="productOrder:${productOrders}" class="col-sm-4">
+    <div class="card mb-3 col-sm-6" style="width: 18rem;">
+      <div class="card-body">
+        <img class="card-img-top" th:src="@{'images/'+${productOrder.product.convertByteToString(productOrder.product.image)}}" alt="Picture of the item">
+        <h4><p th:text="${productOrder.product.itemName}"> </p> </h4>
+        <p>Description: <span th:text="${productOrder.product.description}" ></span> </p>
+        <p>Item in stock: <span th:text="${productOrder.product.stock}" ></span> </p>
+        <h4 class="pull-right">RSD <span th:text="${productOrder.product.price}"> </span></h4>
+        <div th:if="${productOrder.status==true}">
+          Order is being prepared: <i class="bi bi-envelope-check-fill"></i>
+        </div>
+        <div th:unless="${productOrder.status==true}">
+          Order has been shipped: <i class="bi bi-truck"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

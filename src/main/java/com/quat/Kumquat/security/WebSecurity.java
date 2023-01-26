@@ -27,6 +27,8 @@ public class WebSecurity {
                 .antMatchers("/index").permitAll()
                 .antMatchers("/shop").permitAll()
                 .antMatchers("/items/**").hasRole("ADMIN")
+                .antMatchers("/orders/").authenticated()
+                .antMatchers("/order/save").hasRole("USER")
                 .and()
                 .formLogin(
                         form -> form

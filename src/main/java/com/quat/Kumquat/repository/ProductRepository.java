@@ -8,4 +8,5 @@ import java.awt.*;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findByItemName(String item_name);
     Product findById(long id);
+
 }

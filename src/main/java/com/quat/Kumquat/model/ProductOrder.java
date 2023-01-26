@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,12 +18,17 @@ public class ProductOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Long idProductOrder;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "idUser")
+    private User user;
 
-    @Column(name = "products_id")
-    private Long productsId;
+    @ManyToOne
+    @JoinColumn(name="idProduct")
+    private Product product;
+
+    @Column(name = "status")
+    private boolean status; // true - ordered , false - sent
 
 }
