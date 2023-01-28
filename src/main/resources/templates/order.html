@@ -21,6 +21,8 @@
 <div th:replace="fragments/general.html :: navigation"></div>
 <br/>
 
+<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/vratiIzvestaj}"> <button style="margin:auto;" class="btn btn-primary">Orders Report PDF</button> </a>
+
 <div id="products" class="mb-3">
     <div sec:authorize="hasRole('ROLE_USER')">
         <div th:replace="fragments/productOrders.html :: orderUser"></div>
@@ -28,6 +30,7 @@
     <div sec:authorize="hasRole('ROLE_ADMIN')">
         <div th:replace="fragments/productOrdersAdmin.html :: orderAdmin"></div>
     </div>
+
 </div>
 </body>
 </html>

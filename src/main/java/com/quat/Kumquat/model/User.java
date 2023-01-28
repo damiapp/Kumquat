@@ -36,5 +36,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<ProductOrder> orders;
 
-
+    @OneToMany(mappedBy = "receiver")
+    private List<Inbox> inbox;
 }

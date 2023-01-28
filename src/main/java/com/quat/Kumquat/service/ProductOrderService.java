@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface ProductOrderService {
     public void setStatusSent(long id);
-
+    User findUserWithProdOrdId(long id);
     void addProductForUser(User user, Product product);
     List<ProductOrder> findAllProductOrdersForUser(User user);
     List<ProductOrder> findAll();
+    ProductOrder findById(long id);
 }

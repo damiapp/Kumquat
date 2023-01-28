@@ -39,6 +39,12 @@
                 Orders
               </a>
             </li>
+            <li sec:authorize="hasRole('ROLE_USER')" class="nav-item">
+            <a class="nav-link active" th:href="@{/inbox}">
+              <i class="bi bi-inbox"></i>
+                Inbox
+            </a>
+          </li>
             <li class="nav-item">
               <a class="nav-link active" th:href="@{/shop}">
                 <i class="bi bi-shop"></i>

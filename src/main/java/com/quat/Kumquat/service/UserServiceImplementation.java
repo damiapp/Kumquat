@@ -38,6 +38,11 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public User findUserById(long id) {
+        return null;
+    }
+
+    @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }

@@ -17,7 +17,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "products")
-public class Product {
+public class    Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProduct;

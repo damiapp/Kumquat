@@ -1,11 +1,15 @@
 package com.quat.Kumquat.controller;
 
+import com.quat.Kumquat.model.Inbox;
 import com.quat.Kumquat.model.Product;
 import com.quat.Kumquat.model.ProductOrder;
 import com.quat.Kumquat.model.User;
+import com.quat.Kumquat.service.InboxService;
 import com.quat.Kumquat.service.ProductOrderService;
 import com.quat.Kumquat.service.ProductService;
 import com.quat.Kumquat.service.UserService;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +22,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,14 +37,17 @@ public class HomeController {
     private UserService userService;
     private ProductService productService;
     private ProductOrderService productOrderService;
+    private InboxService inboxService;
 
     @Autowired
     public HomeController(UserService userService,
                           ProductService productService,
-                          ProductOrderService productOrderService) {
+                          ProductOrderService productOrderService,
+                          InboxService inboxService) {
         this.userService = userService;
         this.productService = productService;
         this.productOrderService = productOrderService;
+        this.inboxService=inboxService;
     }
 
     @GetMapping("/index")
@@ -148,7 +159,6 @@ public class HomeController {
     public String allProductOrders(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-        System.out.println(user.getRoles().get(0).getName());
         if(user.getRoles().get(0).getName().equals("ROLE_USER")){
             List<ProductOrder> productOrders = productOrderService.findAllProductOrdersForUser(user);
             model.addAttribute("productOrders",productOrders);
@@ -170,6 +180,68 @@ public class HomeController {
     public String allProductOrders(@RequestParam("prodOrderId") long prodOrderId,
             Model model){
         productOrderService.setStatusSent(prodOrderId);
+        //send msg for shiping
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User sender = userService.findUserByEmail(auth.getName());
+        ProductOrder productOrder = productOrderService.findById(prodOrderId);
+        User reciever = productOrder.getUser();
+        Product product = productOrder.getProduct();
+        String title = "Your " + product.getItemName() + " has been shiped";
+        String msg = "Thank you " + reciever.getName() + " for ordering item " + product.getItemName() +
+                "at the price of " + product.getPrice() + "RSD";
+        inboxService.sendMessage(sender,reciever,title,msg);
         return "redirect:/orders";
+    }
+
+    @GetMapping(value = "/inbox")
+    public String allMessages(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        List<Inbox> inbox = user.getInbox();
+        model.addAttribute("inbox",inbox);
+        return "inbox";
+    }
+
+    @GetMapping(value="generisiIzvestaj")
+    public void generisiIzvestaj(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        List<Inbox> inbox = user.getInbox();
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(inbox);
+        InputStream inputStream = this.getClass().getResourceAsStream("/jasperreports/inbox.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("name",user.getName());
+        params.put("mail",user.getEmail());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+        inputStream.close();
+        response.setContentType("application/x-download");
+        response.addHeader("Content-disposition", "attachment; filename=InboxReport.pdf");
+        OutputStream out = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint,out);
+    }
+
+    @GetMapping(value="vratiIzvestaj")
+    public void vratiIzvestaj(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        List<ProductOrder> productOrders = productOrderService.findAll();
+        List<ProductOrder> productOrders1 = new ArrayList<ProductOrder>();
+        for(ProductOrder po: productOrders){
+            if(po.isStatus())
+                productOrders1.add(po);
+        }
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(productOrders1);
+        InputStream inputStream = this.getClass().getResourceAsStream("/jasperreports/shop.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("name",user.getName());
+        params.put("mail",user.getEmail());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+        inputStream.close();
+        response.setContentType("application/x-download");
+        response.addHeader("Content-disposition", "attachment; filename=OrderReport.pdf");
+        OutputStream out = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint,out);
     }
 }

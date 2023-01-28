@@ -71,6 +71,10 @@
 			<artifactId>javax.el</artifactId>
 			<version>3.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
 		<!-- Guava for Sha256 -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -101,11 +105,26 @@
 		</dependency>
 
 
-		<!-- Lombok preety code -->
+		<!-- Lombok pretty code -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+
+		<!-- Jasper reports -->
+
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.20.0</version>
 		</dependency>
 
 	</dependencies>

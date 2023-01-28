@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -21,11 +19,16 @@ public class Inbox {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long idInbox;
-
-
-
+    @Column(nullable = false)
+    private Long idSender;
     @Column(nullable = false)
     private String subject;
     @Column(nullable = false)
     private String msg;
+    @Column(nullable = false)
+    private Date timeSent;
+    @ManyToOne
+    @JoinColumn(name="idUser")
+    private User receiver;
+
 }

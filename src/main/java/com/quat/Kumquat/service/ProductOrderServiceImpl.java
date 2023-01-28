@@ -33,6 +33,12 @@ public class ProductOrderServiceImpl implements ProductOrderService{
     }
 
     @Override
+    public User findUserWithProdOrdId(long id) {
+        ProductOrder productOrder = productOrderRepository.findById(id).get();
+        return userService.findUserById(productOrder.getUser().getIdUser());
+    }
+
+    @Override
     public void addProductForUser(User user, Product product) {
         ProductOrder productOrder = new ProductOrder();
         productOrder.setProduct(product);
@@ -48,5 +54,10 @@ public class ProductOrderServiceImpl implements ProductOrderService{
 
     public List<ProductOrder> findAll(){
         return productOrderRepository.findAll();
+    }
+
+    @Override
+    public ProductOrder findById(long id) {
+        return productOrderRepository.findById(id).get();
     }
 }

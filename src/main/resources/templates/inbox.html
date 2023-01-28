@@ -21,8 +21,12 @@
 <div th:replace="fragments/general.html :: navigation"></div>
 <br/>
 
-<div id="products" class="mb-3">
-    <div th:replace="fragments/products.html :: list"></div>
+<a th:href="@{/generisiIzvestaj}"> <button style="margin:auto;" class="btn btn-primary">Inbox Report PDF</button> </a>
+
+<div class="position-relative">
+    <div class="chat-messages p-4">
+        <div th:replace="fragments/message.html" :: msg></div>
+    </div>
 </div>
 
 </body>
