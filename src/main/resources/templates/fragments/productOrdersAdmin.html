@@ -1,6 +1,6 @@
 <div  th:fragment="orderAdmin" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <div th:each="user:${users}" class="row">
-    <h4 class="pull-right"> <span th:text="${user.name}"> </span></h4>
+    <h4 class="pull-right bg-black"> <span th:text="${user.name}"> </span></h4>
     <div th:each="order:${user.orders}" class="col-sm-4">
     <div class="card mb-3 col-sm-6" style="width: 18rem;">
       <div class="card-body">

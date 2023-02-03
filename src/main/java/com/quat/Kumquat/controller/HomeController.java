@@ -151,6 +151,8 @@ public class HomeController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         Product prod = productService.findProduct(prodId);
+        prod.setStock(prod.getStock()-1);
+        productService.saveProduct(prod);
         productOrderService.addProductForUser(user,prod);
         return "redirect:/shop?success";
     }
@@ -188,7 +190,7 @@ public class HomeController {
         Product product = productOrder.getProduct();
         String title = "Your " + product.getItemName() + " has been shiped";
         String msg = "Thank you " + reciever.getName() + " for ordering item " + product.getItemName() +
-                "at the price of " + product.getPrice() + "RSD";
+                " at the price of " + product.getPrice() + "RSD!";
         inboxService.sendMessage(sender,reciever,title,msg);
         return "redirect:/orders";
     }
